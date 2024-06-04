@@ -854,7 +854,7 @@ function tabcontent:Dropdown(text, list, callback)
     Dropdown.BackgroundColor3 = Color3.fromRGB(34, 34, 34)
     Dropdown.ClipsDescendants = true
     Dropdown.Position = UDim2.new(-0.541071415, 0, -0.532915354, 0)
-    Dropdown.Size = UDim2.new(0, 363, 0, 84) -- Verdoppelte Höhe
+    Dropdown.Size = UDim2.new(0, 363, 0, 42)
 
     DropdownCorner.CornerRadius = UDim.new(0, 5)
     DropdownCorner.Name = "DropdownCorner"
@@ -864,7 +864,7 @@ function tabcontent:Dropdown(text, list, callback)
     DropdownBtn.Parent = Dropdown
     DropdownBtn.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     DropdownBtn.BackgroundTransparency = 1.000
-    DropdownBtn.Size = UDim2.new(0, 363, 0, 84) -- Verdoppelte Höhe
+    DropdownBtn.Size = UDim2.new(0, 363, 0, 42)
     DropdownBtn.Font = Enum.Font.SourceSans
     DropdownBtn.Text = ""
     DropdownBtn.TextColor3 = Color3.fromRGB(0, 0, 0)
@@ -875,7 +875,7 @@ function tabcontent:Dropdown(text, list, callback)
     DropdownTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     DropdownTitle.BackgroundTransparency = 1.000
     DropdownTitle.Position = UDim2.new(0.0358126722, 0, 0, 0)
-    DropdownTitle.Size = UDim2.new(0, 187, 0, 84) -- Verdoppelte Höhe
+    DropdownTitle.Size = UDim2.new(0, 187, 0, 42)
     DropdownTitle.Font = Enum.Font.Gotham
     DropdownTitle.Text = text
     DropdownTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -909,7 +909,7 @@ function tabcontent:Dropdown(text, list, callback)
         function()
             if droptog == false then
                 Dropdown:TweenSize(
-                    UDim2.new(0, 363, 0, 110 + framesize),
+                    UDim2.new(0, 363, 0, 110 + framesize), -- Verdoppelte Höhe beim Öffnen
                     Enum.EasingDirection.Out,
                     Enum.EasingStyle.Quart,
                     .2,
@@ -924,7 +924,7 @@ function tabcontent:Dropdown(text, list, callback)
                 Tab.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y)
             else
                 Dropdown:TweenSize(
-                    UDim2.new(0, 363, 0, 84), -- Verdoppelte Höhe
+                    UDim2.new(0, 363, 0, 42), -- Normale Größe beim Schließen
                     Enum.EasingDirection.Out,
                     Enum.EasingStyle.Quart,
                     .2,
@@ -992,7 +992,7 @@ function tabcontent:Dropdown(text, list, callback)
                 DropdownTitle.Text = text .. " - " .. v
                 pcall(callback, v)
                 Dropdown:TweenSize(
-                    UDim2.new(0, 363, 0, 84), -- Verdoppelte Höhe
+                    UDim2.new(0, 363, 0, 42), -- Normale Größe beim Schließen
                     Enum.EasingDirection.Out,
                     Enum.EasingStyle.Quart,
                     .2,
