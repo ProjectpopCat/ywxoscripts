@@ -908,9 +908,8 @@ function tabcontent:Dropdown(text, list, callback)
     DropdownBtn.MouseButton1Click:Connect(
         function()
             if droptog == false then
-                framesize = math.min(#list, 6) * 26 -- Berechnet die Höhe basierend auf der Anzahl der Elemente, max 6 sichtbar
                 Dropdown:TweenSize(
-                    UDim2.new(0, 363, 0, 42 + framesize),
+                    UDim2.new(0, 363, 0, 126 + framesize), -- Erweiterte Höhe beim Öffnen
                     Enum.EasingDirection.Out,
                     Enum.EasingStyle.Quart,
                     .2,
@@ -925,7 +924,7 @@ function tabcontent:Dropdown(text, list, callback)
                 Tab.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y)
             else
                 Dropdown:TweenSize(
-                    UDim2.new(0, 363, 0, 42),
+                    UDim2.new(0, 363, 0, 42), -- Normale Größe beim Schließen
                     Enum.EasingDirection.Out,
                     Enum.EasingStyle.Quart,
                     .2,
@@ -945,6 +944,10 @@ function tabcontent:Dropdown(text, list, callback)
 
     for i, v in next, list do
         itemcount = itemcount + 1
+        if itemcount <= 6 then -- Verdoppelte Anzahl der sichtbaren Elemente
+            framesize = framesize + 26
+            DropItemHolder.Size = UDim2.new(0, 342, 0, framesize)
+        end
         local Item = Instance.new("TextButton")
         local ItemCorner = Instance.new("UICorner")
 
@@ -972,8 +975,7 @@ function tabcontent:Dropdown(text, list, callback)
                 ):Play()
             end
         )
-
-        Item.MouseLeave:Connect(
+Item.MouseLeave:Connect(
             function()
                 TweenService:Create(
                     Item,
@@ -989,7 +991,7 @@ function tabcontent:Dropdown(text, list, callback)
                 DropdownTitle.Text = text .. " - " .. v
                 pcall(callback, v)
                 Dropdown:TweenSize(
-                    UDim2.new(0, 363, 0, 42),
+                    UDim2.new(0, 363, 0, 42), -- Normale Größe beim Schließen
                     Enum.EasingDirection.Out,
                     Enum.EasingStyle.Quart,
                     .2,
