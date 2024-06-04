@@ -899,7 +899,7 @@ function tabcontent:Dropdown(text, list, callback)
     DropItemHolder.Position = UDim2.new(-0.00400000019, 0, 1.04999995, 0)
     DropItemHolder.Size = UDim2.new(0, 342, 0, 0)
     DropItemHolder.CanvasSize = UDim2.new(0, 0, 0, 0)
-    DropItemHolder.ScrollBarThickness = 3
+    DropItemHolder.ScrollBarThickness = 0
 
     DropLayout.Name = "DropLayout"
     DropLayout.Parent = DropItemHolder
