@@ -905,52 +905,33 @@ function tabcontent:Dropdown(text, list, callback)
     DropLayout.Parent = DropItemHolder
     DropLayout.SortOrder = Enum.SortOrder.LayoutOrder
 
+    local function AdjustDropdownHeight()
+        if droptog then
+            Dropdown.Size = UDim2.new(0, 363, 0, 110 + framesize)
+            DropItemHolder.Size = UDim2.new(0, 342, 0, framesize)
+        else
+            Dropdown.Size = UDim2.new(0, 363, 0, 42)
+            DropItemHolder.Size = UDim2.new(0, 342, 0, 0)
+        end
+        Tab.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y)
+    end
+
     DropdownBtn.MouseButton1Click:Connect(
         function()
-            if droptog == false then
-                Dropdown:TweenSize(
-                    UDim2.new(0, 363, 0, 126 + framesize), -- Erweiterte Höhe beim Öffnen
-                    Enum.EasingDirection.Out,
-                    Enum.EasingStyle.Quart,
-                    .2,
-                    true
-                )
-                TweenService:Create(
-                    ArrowImg,
-                    TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-                    {Rotation = 270}
-                ):Play()
-                wait(.2)
-                Tab.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y)
-            else
-                Dropdown:TweenSize(
-                    UDim2.new(0, 363, 0, 42), -- Normale Größe beim Schließen
-                    Enum.EasingDirection.Out,
-                    Enum.EasingStyle.Quart,
-                    .2,
-                    true
-                )
-                TweenService:Create(
-                    ArrowImg,
-                    TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-                    {Rotation = 0}
-                ):Play()
-                wait(.2)
-                Tab.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y)
-            end
             droptog = not droptog
+            AdjustDropdownHeight()
+            TweenService:Create(
+                ArrowImg,
+                TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+                {Rotation = droptog and 270 or 0}
+            ):Play()
         end
     )
 
-    for i, v in next, list do
+    for i, v in ipairs(list) do
         itemcount = itemcount + 1
-        if itemcount <= 6 then -- Verdoppelte Anzahl der sichtbaren Elemente
-            framesize = framesize + 26
-            DropItemHolder.Size = UDim2.new(0, 342, 0, framesize)
-        end
+        framesize = framesize + 26
         local Item = Instance.new("TextButton")
-        local ItemCorner = Instance.new("UICorner")
-
         Item.Name = "Item"
         Item.Parent = DropItemHolder
         Item.BackgroundColor3 = Color3.fromRGB(34, 34, 34)
@@ -961,9 +942,8 @@ function tabcontent:Dropdown(text, list, callback)
         Item.Text = v
         Item.TextColor3 = Color3.fromRGB(255, 255, 255)
         Item.TextSize = 15.000
-
+        local ItemCorner = Instance.new("UICorner")
         ItemCorner.CornerRadius = UDim.new(0, 4)
-        ItemCorner.Name = "ItemCorner"
         ItemCorner.Parent = Item
 
         Item.MouseEnter:Connect(
@@ -975,7 +955,8 @@ function tabcontent:Dropdown(text, list, callback)
                 ):Play()
             end
         )
-Item.MouseLeave:Connect(
+
+        Item.MouseLeave:Connect(
             function()
                 TweenService:Create(
                     Item,
@@ -990,27 +971,19 @@ Item.MouseLeave:Connect(
                 droptog = not droptog
                 DropdownTitle.Text = text .. " - " .. v
                 pcall(callback, v)
-                Dropdown:TweenSize(
-                    UDim2.new(0, 363, 0, 42), -- Normale Größe beim Schließen
-                    Enum.EasingDirection.Out,
-                    Enum.EasingStyle.Quart,
-                    .2,
-                    true
-                )
+                AdjustDropdownHeight()
                 TweenService:Create(
                     ArrowImg,
                     TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
                     {Rotation = 0}
                 ):Play()
-                wait(.2)
-                Tab.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y)
             end
         )
 
-        DropItemHolder.CanvasSize = UDim2.new(0, 0, 0, DropLayout.AbsoluteContentSize.Y)
+        DropItemHolder.CanvasSize = UDim2.new(0, 0, 0, framesize)
     end
-    Tab.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y)
 end
+
 
 
 
