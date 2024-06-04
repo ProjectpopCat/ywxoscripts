@@ -909,7 +909,7 @@ function tabcontent:Dropdown(text, list, callback)
         function()
             if droptog == false then
                 Dropdown:TweenSize(
-                    UDim2.new(0, 363, 0, 110 + framesize), -- Verdoppelte Höhe beim Öffnen
+                    UDim2.new(0, 363, 0, 55 + framesize),
                     Enum.EasingDirection.Out,
                     Enum.EasingStyle.Quart,
                     .2,
@@ -931,7 +931,7 @@ function tabcontent:Dropdown(text, list, callback)
                 Tab.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y)
             else
                 Dropdown:TweenSize(
-                    UDim2.new(0, 363, 0, 42), -- Normale Größe beim Schließen
+                    UDim2.new(0, 363, 0, 42),
                     Enum.EasingDirection.Out,
                     Enum.EasingStyle.Quart,
                     .2,
@@ -958,9 +958,7 @@ function tabcontent:Dropdown(text, list, callback)
 
     for i, v in next, list do
         itemcount = itemcount + 1
-        if itemcount <= 6 then -- Verdoppelte Anzahl der sichtbaren Elemente
-            framesize = framesize + 26
-        end
+        framesize = framesize + 26
         local Item = Instance.new("TextButton")
         local ItemCorner = Instance.new("UICorner")
 
@@ -1005,7 +1003,7 @@ function tabcontent:Dropdown(text, list, callback)
                 DropdownTitle.Text = text .. " - " .. v
                 pcall(callback, v)
                 Dropdown:TweenSize(
-                    UDim2.new(0, 363, 0, 42), -- Normale Größe beim Schließen
+                    UDim2.new(0, 363, 0, 42),
                     Enum.EasingDirection.Out,
                     Enum.EasingStyle.Quart,
                     .2,
@@ -1032,6 +1030,7 @@ function tabcontent:Dropdown(text, list, callback)
     end
     Tab.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y)
 end
+
 
 
 
