@@ -854,7 +854,7 @@ function tabcontent:Dropdown(text, list, callback)
     Dropdown.BackgroundColor3 = Color3.fromRGB(34, 34, 34)
     Dropdown.ClipsDescendants = true
     Dropdown.Position = UDim2.new(-0.541071415, 0, -0.532915354, 0)
-    Dropdown.Size = UDim2.new(0, 363, 0, 42)
+    Dropdown.Size = UDim2.new(0, 363, 0, 84) -- Verdoppelte Höhe
 
     DropdownCorner.CornerRadius = UDim.new(0, 5)
     DropdownCorner.Name = "DropdownCorner"
@@ -864,7 +864,7 @@ function tabcontent:Dropdown(text, list, callback)
     DropdownBtn.Parent = Dropdown
     DropdownBtn.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     DropdownBtn.BackgroundTransparency = 1.000
-    DropdownBtn.Size = UDim2.new(0, 363, 0, 42)
+    DropdownBtn.Size = UDim2.new(0, 363, 0, 84) -- Verdoppelte Höhe
     DropdownBtn.Font = Enum.Font.SourceSans
     DropdownBtn.Text = ""
     DropdownBtn.TextColor3 = Color3.fromRGB(0, 0, 0)
@@ -875,7 +875,7 @@ function tabcontent:Dropdown(text, list, callback)
     DropdownTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     DropdownTitle.BackgroundTransparency = 1.000
     DropdownTitle.Position = UDim2.new(0.0358126722, 0, 0, 0)
-    DropdownTitle.Size = UDim2.new(0, 187, 0, 42)
+    DropdownTitle.Size = UDim2.new(0, 187, 0, 84) -- Verdoppelte Höhe
     DropdownTitle.Font = Enum.Font.Gotham
     DropdownTitle.Text = text
     DropdownTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -891,13 +891,13 @@ function tabcontent:Dropdown(text, list, callback)
     ArrowImg.Image = "http://www.roblox.com/asset/?id=6034818375"
 
     DropItemHolder.Name = "DropItemHolder"
-    DropItemHolder.Parent = Dropdown
+    DropItemHolder.Parent = DropdownTitle
     DropItemHolder.Active = true
     DropItemHolder.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     DropItemHolder.BackgroundTransparency = 1.000
     DropItemHolder.BorderSizePixel = 0
-    DropItemHolder.Position = UDim2.new(0, 0, 1, 0)
-    DropItemHolder.Size = UDim2.new(1, -21, 0, 0)
+    DropItemHolder.Position = UDim2.new(-0.00400000019, 0, 1.04999995, 0)
+    DropItemHolder.Size = UDim2.new(0, 342, 0, 0)
     DropItemHolder.CanvasSize = UDim2.new(0, 0, 0, 0)
     DropItemHolder.ScrollBarThickness = 3
 
@@ -905,24 +905,11 @@ function tabcontent:Dropdown(text, list, callback)
     DropLayout.Parent = DropItemHolder
     DropLayout.SortOrder = Enum.SortOrder.LayoutOrder
 
-    local function updateCanvasSize()
-        DropItemHolder.CanvasSize = UDim2.new(0, 0, 0, DropLayout.AbsoluteContentSize.Y)
-        Tab.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y)
-    end
-
     DropdownBtn.MouseButton1Click:Connect(
         function()
             if droptog == false then
-                framesize = itemcount * 26
                 Dropdown:TweenSize(
-                    UDim2.new(0, 363, 0, 42 + framesize),
-                    Enum.EasingDirection.Out,
-                    Enum.EasingStyle.Quart,
-                    .2,
-                    true
-                )
-                DropItemHolder:TweenSize(
-                    UDim2.new(1, -21, 0, framesize),
+                    UDim2.new(0, 363, 0, 110 + framesize),
                     Enum.EasingDirection.Out,
                     Enum.EasingStyle.Quart,
                     .2,
@@ -934,17 +921,10 @@ function tabcontent:Dropdown(text, list, callback)
                     {Rotation = 270}
                 ):Play()
                 wait(.2)
-                updateCanvasSize()
+                Tab.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y)
             else
                 Dropdown:TweenSize(
-                    UDim2.new(0, 363, 0, 42),
-                    Enum.EasingDirection.Out,
-                    Enum.EasingStyle.Quart,
-                    .2,
-                    true
-                )
-                DropItemHolder:TweenSize(
-                    UDim2.new(1, -21, 0, 0),
+                    UDim2.new(0, 363, 0, 84), -- Verdoppelte Höhe
                     Enum.EasingDirection.Out,
                     Enum.EasingStyle.Quart,
                     .2,
@@ -956,7 +936,7 @@ function tabcontent:Dropdown(text, list, callback)
                     {Rotation = 0}
                 ):Play()
                 wait(.2)
-                updateCanvasSize()
+                Tab.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y)
             end
             droptog = not droptog
         end
@@ -964,6 +944,10 @@ function tabcontent:Dropdown(text, list, callback)
 
     for i, v in next, list do
         itemcount = itemcount + 1
+        if itemcount <= 6 then -- Verdoppelte Anzahl der sichtbaren Elemente
+            framesize = framesize + 26
+            DropItemHolder.Size = UDim2.new(0, 342, 0, framesize)
+        end
         local Item = Instance.new("TextButton")
         local ItemCorner = Instance.new("UICorner")
 
@@ -1008,14 +992,7 @@ function tabcontent:Dropdown(text, list, callback)
                 DropdownTitle.Text = text .. " - " .. v
                 pcall(callback, v)
                 Dropdown:TweenSize(
-                    UDim2.new(0, 363, 0, 42),
-                    Enum.EasingDirection.Out,
-                    Enum.EasingStyle.Quart,
-                    .2,
-                    true
-                )
-                DropItemHolder:TweenSize(
-                    UDim2.new(1, -21, 0, 0),
+                    UDim2.new(0, 363, 0, 84), -- Verdoppelte Höhe
                     Enum.EasingDirection.Out,
                     Enum.EasingStyle.Quart,
                     .2,
@@ -1027,13 +1004,15 @@ function tabcontent:Dropdown(text, list, callback)
                     {Rotation = 0}
                 ):Play()
                 wait(.2)
-                updateCanvasSize()
+                Tab.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y)
             end
         )
 
-        updateCanvasSize()
+        DropItemHolder.CanvasSize = UDim2.new(0, 0, 0, DropLayout.AbsoluteContentSize.Y)
     end
+    Tab.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y)
 end
+
 
 
 
