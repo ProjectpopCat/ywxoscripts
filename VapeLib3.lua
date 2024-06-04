@@ -891,13 +891,13 @@ function tabcontent:Dropdown(text, list, callback)
     ArrowImg.Image = "http://www.roblox.com/asset/?id=6034818375"
 
     DropItemHolder.Name = "DropItemHolder"
-    DropItemHolder.Parent = DropdownTitle
+    DropItemHolder.Parent = Dropdown
     DropItemHolder.Active = true
     DropItemHolder.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     DropItemHolder.BackgroundTransparency = 1.000
     DropItemHolder.BorderSizePixel = 0
-    DropItemHolder.Position = UDim2.new(-0.00400000019, 0, 1.04999995, 0)
-    DropItemHolder.Size = UDim2.new(0, 342, 0, 0)
+    DropItemHolder.Position = UDim2.new(0, 0, 1, 0)
+    DropItemHolder.Size = UDim2.new(1, 0, 0, 0)
     DropItemHolder.CanvasSize = UDim2.new(0, 0, 0, 0)
     DropItemHolder.ScrollBarThickness = 3
 
@@ -915,6 +915,13 @@ function tabcontent:Dropdown(text, list, callback)
                     .2,
                     true
                 )
+                DropItemHolder:TweenSize(
+                    UDim2.new(1, 0, 0, framesize),
+                    Enum.EasingDirection.Out,
+                    Enum.EasingStyle.Quart,
+                    .2,
+                    true
+                )
                 TweenService:Create(
                     ArrowImg,
                     TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
@@ -925,6 +932,13 @@ function tabcontent:Dropdown(text, list, callback)
             else
                 Dropdown:TweenSize(
                     UDim2.new(0, 363, 0, 42), -- Normale Größe beim Schließen
+                    Enum.EasingDirection.Out,
+                    Enum.EasingStyle.Quart,
+                    .2,
+                    true
+                )
+                DropItemHolder:TweenSize(
+                    UDim2.new(1, 0, 0, 0),
                     Enum.EasingDirection.Out,
                     Enum.EasingStyle.Quart,
                     .2,
@@ -946,7 +960,6 @@ function tabcontent:Dropdown(text, list, callback)
         itemcount = itemcount + 1
         if itemcount <= 6 then -- Verdoppelte Anzahl der sichtbaren Elemente
             framesize = framesize + 26
-            DropItemHolder.Size = UDim2.new(0, 342, 0, framesize)
         end
         local Item = Instance.new("TextButton")
         local ItemCorner = Instance.new("UICorner")
@@ -998,6 +1011,13 @@ function tabcontent:Dropdown(text, list, callback)
                     .2,
                     true
                 )
+                DropItemHolder:TweenSize(
+                    UDim2.new(1, 0, 0, 0),
+                    Enum.EasingDirection.Out,
+                    Enum.EasingStyle.Quart,
+                    .2,
+                    true
+                )
                 TweenService:Create(
                     ArrowImg,
                     TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
@@ -1012,6 +1032,7 @@ function tabcontent:Dropdown(text, list, callback)
     end
     Tab.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y)
 end
+
 
 
 
