@@ -909,7 +909,7 @@ function tabcontent:Dropdown(text, list, callback)
         function()
             if droptog == false then
                 Dropdown:TweenSize(
-                    UDim2.new(0, 363, 0, 90 + framesize), -- Verdoppelte Höhe beim Öffnen
+                    UDim2.new(0, 363, 0, 60 + framesize), -- Verdoppelte Höhe beim Öffnen
                     Enum.EasingDirection.Out,
                     Enum.EasingStyle.Quart,
                     .2,
