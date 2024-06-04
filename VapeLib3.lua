@@ -811,6 +811,31 @@ function lib:Window(text, preset, closebind)
 
 
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function tabcontent:Dropdown(text, list, callback)
     local droptog = false
     local framesize = 0
@@ -890,6 +915,13 @@ function tabcontent:Dropdown(text, list, callback)
                     .2,
                     true
                 )
+                DropItemHolder:TweenSize(
+                    UDim2.new(0, 342, 0, framesize), -- Ensures DropItemHolder also resizes
+                    Enum.EasingDirection.Out,
+                    Enum.EasingStyle.Quart,
+                    .2,
+                    true
+                )
                 TweenService:Create(
                     ArrowImg,
                     TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
@@ -900,6 +932,13 @@ function tabcontent:Dropdown(text, list, callback)
             else
                 Dropdown:TweenSize(
                     UDim2.new(0, 363, 0, 42),
+                    Enum.EasingDirection.Out,
+                    Enum.EasingStyle.Quart,
+                    .2,
+                    true
+                )
+                DropItemHolder:TweenSize(
+                    UDim2.new(0, 342, 0, 0), -- Ensures DropItemHolder also resizes back
                     Enum.EasingDirection.Out,
                     Enum.EasingStyle.Quart,
                     .2,
@@ -973,6 +1012,13 @@ function tabcontent:Dropdown(text, list, callback)
                     .2,
                     true
                 )
+                DropItemHolder:TweenSize(
+                    UDim2.new(0, 342, 0, 0), -- Ensures DropItemHolder also resizes back
+                    Enum.EasingDirection.Out,
+                    Enum.EasingStyle.Quart,
+                    .2,
+                    true
+                )
                 TweenService:Create(
                     ArrowImg,
                     TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
@@ -987,6 +1033,35 @@ function tabcontent:Dropdown(text, list, callback)
     end
     Tab.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y)
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
 
 
 
