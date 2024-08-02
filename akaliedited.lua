@@ -2,7 +2,7 @@ do local a=[[77fuscator 0.6.0 discord.gg/7ZQ244HpVp]];return(function(a)local b,
 
 --[[
 
-local AkaliNotif = loadstring(game:HttpGet("https://raw.githubusercontent.com/ProjectpopCat/ywxoscripts/akaliedited.lua"))();
+local AkaliNotif = loadstring(game:HttpGet("https://raw.githubusercontent.com/ProjectpopCat/ywxoscripts/main/akaliedited.lua"))();
 local Notify = AkaliNotif.Notify;
 
 Notify({
