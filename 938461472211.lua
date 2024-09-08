@@ -1,0 +1,358 @@
+local lib = {RainbowColorValue = 0, HueSelectionPosition = 0}
+local UserInputService = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
+local RunService = game:GetService("RunService")
+local LocalPlayer = game:GetService("Players").LocalPlayer
+local Mouse = LocalPlayer:GetMouse()
+local CloseBind = Enum.KeyCode.RightControl
+local ui = Instance.new("ScreenGui")
+ui.Name = "YS_Search"
+ui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+coroutine.wrap(
+    function()
+        while wait() do
+            lib.RainbowColorValue = lib.RainbowColorValue + 1 / 255
+            lib.HueSelectionPosition = lib.HueSelectionPosition + 1
+
+            if lib.RainbowColorValue >= 1 then
+                lib.RainbowColorValue = 0
+            end
+
+            if lib.HueSelectionPosition == 80 then
+                lib.HueSelectionPosition = 0
+            end
+        end
+    end
+)()
+
+
+local Main = Instance.new("Frame")
+Main.Name = "Main"
+Main.Parent = ui
+Main.AnchorPoint = Vector2.new(0.5, 0.5)
+Main.BackgroundColor3 = Color3.new(0.117647, 0.117647, 0.117647)
+Main.BorderColor3 = Color3.new(0.815686, 0.831373, 0.905882)
+Main.BorderSizePixel = 0
+Main.Position = UDim2.new(0.5, 0, 0.5, 0)
+Main.Size = UDim2.new(0, 292, 0, 319)
+local function MakeDraggable(DragFrame, object)
+    local Dragging = false
+    local DragStart = nil
+    local StartPosition = nil
+
+    local function Update(input)
+        local Delta = input.Position - DragStart
+        local NewPosition = UDim2.new(
+            StartPosition.X.Scale,
+            StartPosition.X.Offset + Delta.X,
+            StartPosition.Y.Scale,
+            StartPosition.Y.Offset + Delta.Y
+        )
+        object.Position = NewPosition
+    end
+
+    DragFrame.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            Dragging = true
+            DragStart = input.Position
+            StartPosition = object.Position
+
+            UserInputService.InputChanged:Connect(function(movementInput)
+                if Dragging and movementInput.UserInputType == Enum.UserInputType.MouseMovement then
+                    Update(movementInput)
+                end
+            end)
+
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    Dragging = false
+                end
+            end)
+        end
+    end)
+end
+MakeDraggable(Main, Main)
+local DragFrame = Instance.new("Frame")
+DragFrame.Name = "DragFrame"
+DragFrame.Parent = Main
+DragFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+DragFrame.BackgroundColor3 = Color3.new(0.0980392, 0.0980392, 0.0980392)
+DragFrame.BorderSizePixel = 0
+DragFrame.Position = UDim2.new(0.5, 0, 0.0521642976, 0)
+DragFrame.Size = UDim2.new(0, 292, 0, 34)
+local UICorner = Instance.new("UICorner")
+UICorner.Parent = DragFrame
+
+local GamesHolder = Instance.new("ScrollingFrame")
+GamesHolder.Name = "GamesHolder"
+GamesHolder.Parent = Main
+GamesHolder.Active = true
+GamesHolder.BackgroundColor3 = Color3.new(1, 1, 1)
+GamesHolder.BackgroundTransparency = 1
+GamesHolder.BorderColor3 = Color3.new(1, 1, 1)
+GamesHolder.BorderSizePixel = 0
+GamesHolder.Position = UDim2.new(0.0167675279, 0, 0.106196769, 0)
+GamesHolder.Size = UDim2.new(0, 280, 0, 246)
+local UICorner_2 = Instance.new("UICorner")
+UICorner_2.Parent = GamesHolder
+
+local gamesholder = {}
+
+local function createButton(name)
+    local button = Instance.new("TextButton")
+    button.Name = name
+    button.Parent = GamesHolder
+    button.BackgroundColor3 = Color3.new(0.815686, 0.831373, 0.905882)
+    button.BorderColor3 = Color3.new(0, 0, 0)
+    button.BorderSizePixel = 0
+    button.Size = UDim2.new(0, 261, 0, 37)
+    button.Font = Enum.Font.SourceSans
+    button.Text = name
+    button.TextColor3 = Color3.new(0, 0, 0)
+    button.TextSize = 18
+    local UICorner = Instance.new("UICorner")
+    UICorner.Parent = button
+    
+    return button
+end
+
+local function addGame(name, randomImageId, gameTitle, gameId, latestUpdate, loadFunction)
+    local button = createButton(name)
+    table.insert(gamesholder, button)
+    
+    button.MouseButton1Click:Connect(function()
+        local Tab = Instance.new("Frame")
+        Tab.Name = name
+        Tab.Parent = Main
+        Tab.BackgroundColor3 = Color3.new(0.117647, 0.117647, 0.117647)
+        Tab.Size = UDim2.new(0, 187, 0, 319)
+        
+        local UICorner = Instance.new("UICorner")
+        UICorner.Parent = Tab
+        
+        local RandomImageBackground = Instance.new("Frame")
+        RandomImageBackground.Parent = Tab
+        RandomImageBackground.BackgroundColor3 = Color3.new(0.0980392, 0.0980392, 0.0980392)
+        RandomImageBackground.Position = UDim2.new(0.192513362, 0, 0.068965517, 0)
+        RandomImageBackground.Size = UDim2.new(0, 113, 0, 113)
+
+        local RandomImage = Instance.new("ImageLabel")
+        RandomImage.Parent = RandomImageBackground
+        RandomImage.BackgroundColor3 = Color3.new(1, 1, 1)
+        RandomImage.Position = UDim2.new(0.0529552884, 0, 0.0555109344, 0)
+        RandomImage.Size = UDim2.new(0, 100, 0, 100)
+        RandomImage.Image = randomImageId
+        local UICornerImage = Instance.new("UICorner")
+        UICornerImage.Parent = RandomImage
+        
+        local GameTitleLabel = Instance.new("TextLabel")
+        GameTitleLabel.Parent = Tab
+        GameTitleLabel.BackgroundTransparency = 1
+        GameTitleLabel.Position = UDim2.new(0.0320855603, 0, 0.432601869, 0)
+        GameTitleLabel.Size = UDim2.new(0, 174, 0, 28)
+        GameTitleLabel.Font = Enum.Font.SourceSansItalic
+        GameTitleLabel.Text = gameTitle
+        GameTitleLabel.TextColor3 = Color3.new(1, 1, 1)
+        GameTitleLabel.TextSize = 16
+
+        local GameIdLabel = Instance.new("TextLabel")
+        GameIdLabel.Parent = Tab
+        GameIdLabel.BackgroundTransparency = 1
+        GameIdLabel.Position = UDim2.new(0.0320855603, 0, 0.489028215, 0)
+        GameIdLabel.Size = UDim2.new(0, 174, 0, 28)
+        GameIdLabel.Font = Enum.Font.SourceSansItalic
+        GameIdLabel.Text = gameId
+        GameIdLabel.TextColor3 = Color3.new(1, 1, 1)
+        GameIdLabel.TextSize = 14
+
+        local LatestUpdateLabel = Instance.new("TextLabel")
+        LatestUpdateLabel.Parent = Tab
+        LatestUpdateLabel.BackgroundTransparency = 1
+        LatestUpdateLabel.Position = UDim2.new(0.0213903747, 0, 0.576802492, 0)
+        LatestUpdateLabel.Size = UDim2.new(0, 174, 0, 28)
+        LatestUpdateLabel.Font = Enum.Font.SourceSansItalic
+        LatestUpdateLabel.Text = latestUpdate
+        LatestUpdateLabel.TextColor3 = Color3.new(1, 1, 1)
+        LatestUpdateLabel.TextSize = 16
+
+        local LoadButton = Instance.new("TextButton")
+        LoadButton.Name = "LoadButton"
+        LoadButton.Parent = Tab
+        LoadButton.BackgroundColor3 = Color3.new(0.815686, 0.831373, 0.905882)
+        LoadButton.Size = UDim2.new(0, 127, 0, 34)
+        LoadButton.Font = Enum.Font.SourceSans
+        LoadButton.Text = "Load Script"
+        LoadButton.TextColor3 = Color3.new(0, 0, 0)
+        LoadButton.TextSize = 18
+        LoadButton.MouseButton1Click:Connect(loadFunction)
+        local UICornerLoad = Instance.new("UICorner")
+        UICornerLoad.Parent = LoadButton
+    end)
+end
+
+
+
+local Title = Instance.new("TextLabel")
+Title.Name = "Title"
+Title.Parent = Main
+Title.BackgroundColor3 = Color3.new(1, 1, 1)
+Title.BackgroundTransparency = 1
+Title.BorderColor3 = Color3.new(0, 0, 0)
+Title.BorderSizePixel = 0
+Title.Position = UDim2.new(0.0171466991, 0, 0.0142997336, 0)
+Title.Size = UDim2.new(0, 280, 0, 24)
+Title.Font = Enum.Font.SourceSans
+Title.Text = "ywxoscripts search lib"
+Title.TextColor3 = Color3.new(1, 1, 1)
+Title.TextSize = 20
+
+
+
+local SearchBox = Instance.new("Frame")
+SearchBox.Name = "SearchBox"
+SearchBox.Parent = Main
+SearchBox.AnchorPoint = Vector2.new(0.5, 0.5)
+SearchBox.BackgroundColor3 = Color3.new(0.117647, 0.117647, 0.117647)
+SearchBox.BorderSizePixel = 0
+SearchBox.Position = UDim2.new(0.5, 0, -0.101189211, 0)
+SearchBox.Size = UDim2.new(0, 292, 0, 49)
+local SearchBar = Instance.new("TextBox")
+SearchBar.Name = "SearchBar"
+SearchBar.Parent = SearchBox
+SearchBar.BackgroundColor3 = Color3.new(1, 1, 1)
+SearchBar.BackgroundTransparency = 1
+SearchBar.BorderColor3 = Color3.new(0, 0, 0)
+SearchBar.BorderSizePixel = 0
+SearchBar.Position = UDim2.new(0.0205479451, 0, 0.122448981, 0)
+SearchBar.Size = UDim2.new(0, 280, 0, 37)
+SearchBar.Font = Enum.Font.SourceSans
+SearchBar.PlaceholderText = "Search here..."
+SearchBar.Text = ""
+SearchBar.TextColor3 = Color3.new(255, 255, 255)
+SearchBar.TextSize = 14
+local UICorner_6 = Instance.new("UICorner")
+UICorner_6.Parent = SearchBox
+
+
+local CancelBackground = Instance.new("Frame")
+CancelBackground.Name = "CancelBackground"
+CancelBackground.Parent = LegendsofSpeed_2
+CancelBackground.BackgroundColor3 = Color3.new(0.0980392, 0.0980392, 0.0980392)
+CancelBackground.BorderColor3 = Color3.new(0, 0, 0)
+CancelBackground.BorderSizePixel = 0
+CancelBackground.Position = UDim2.new(0.133689836, 0, 0.840125382, 0)
+CancelBackground.Size = UDim2.new(0, 136, 0, 38)
+local CancelButton = Instance.new("TextButton")
+CancelButton.Name = "CancelButton"
+CancelButton.Parent = CancelBackground
+CancelButton.BackgroundColor3 = Color3.new(0.537255, 0.545098, 0.596078)
+CancelButton.BorderColor3 = Color3.new(0, 0, 0)
+CancelButton.BorderSizePixel = 0
+CancelButton.Position = UDim2.new(0.0354277678, 0, 0.0718761608, 0)
+CancelButton.Size = UDim2.new(0, 127, 0, 34)
+CancelButton.Font = Enum.Font.SourceSans
+CancelButton.Text = "Cancel Selection"
+CancelButton.TextColor3 = Color3.new(0, 0, 0)
+CancelButton.TextSize = 18
+local UICorner_12 = Instance.new("UICorner")
+UICorner_12.Parent = CancelButton
+local UICorner_13 = Instance.new("UICorner")
+UICorner_13.Parent = CancelBackground
+
+
+
+local BottomFrame = Instance.new("Frame")
+BottomFrame.Name = "BottomFrame"
+BottomFrame.Parent = Main
+BottomFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+BottomFrame.BackgroundColor3 = Color3.new(0.0980392, 0.0980392, 0.0980392)
+BottomFrame.BorderSizePixel = 0
+BottomFrame.Position = UDim2.new(0.5, 0, 0.945581138, 0)
+BottomFrame.Size = UDim2.new(0, 292, 0, 34)
+
+local UICorner_15 = Instance.new("UICorner")
+UICorner_15.Parent = BottomFrame
+
+local OpenCreatorInfo = Instance.new("ImageButton")
+OpenCreatorInfo.Name = "OpenCreatorInfo"
+OpenCreatorInfo.Parent = BottomFrame
+OpenCreatorInfo.BackgroundColor3 = Color3.new(1, 1, 1)
+OpenCreatorInfo.BackgroundTransparency = 1
+OpenCreatorInfo.BorderColor3 = Color3.new(0, 0, 0)
+OpenCreatorInfo.BorderSizePixel = 0
+OpenCreatorInfo.Size = UDim2.new(0, 34, 0, 34)
+OpenCreatorInfo.Image = "http://www.roblox.com/asset/?id=9405926389"
+
+
+local UICorner_16 = Instance.new("UICorner")
+UICorner_16.Parent = OpenCreatorInfo
+
+local CreatorFrame = Instance.new("Frame")
+CreatorFrame.Name = "CreatorFrame"
+CreatorFrame.Parent = BottomFrame
+CreatorFrame.BackgroundColor3 = Color3.new(0.117647, 0.117647, 0.117647)
+CreatorFrame.BorderColor3 = Color3.new(0, 0, 0)
+CreatorFrame.BorderSizePixel = 0
+CreatorFrame.Position = UDim2.new(0, 0, 1.28177238, 0)
+CreatorFrame.Size = UDim2.new(0, 292, 0, 48)
+
+
+local Cimage = Instance.new("ImageLabel")
+Cimage.Name = "Cimage"
+Cimage.Parent = CreatorFrame
+Cimage.BackgroundColor3 = Color3.new(1, 1, 1)
+Cimage.BorderColor3 = Color3.new(0, 0, 0)
+Cimage.BorderSizePixel = 0
+Cimage.Size = UDim2.new(0, 48, 0, 48)
+Cimage.Image = "http://www.roblox.com/asset/?id=87812048276361"
+local UICorner_17 = Instance.new("UICorner")
+UICorner_17.Parent = Cimage
+local UICorner_18 = Instance.new("UICorner")
+UICorner_18.Parent = CreatorFrame
+
+
+local Cline1 = Instance.new("TextLabel")
+Cline1.Name = "Cline1"
+Cline1.Parent = CreatorFrame
+Cline1.BackgroundColor3 = Color3.new(1, 1, 1)
+Cline1.BackgroundTransparency = 1
+Cline1.BorderColor3 = Color3.new(0, 0, 0)
+Cline1.BorderSizePixel = 0
+Cline1.Position = UDim2.new(0.184931502, 0, 0, 0)
+Cline1.Size = UDim2.new(0, 231, 0, 29)
+Cline1.Font = Enum.Font.SourceSans
+Cline1.Text = "Developer : ywxo"
+Cline1.TextColor3 = Color3.new(1, 1, 1)
+Cline1.TextSize = 14
+Cline1.TextXAlignment = Enum.TextXAlignment.Left
+
+local Cline2 = Instance.new("TextLabel")
+Cline2.Name = "Cline2"
+Cline2.Parent = CreatorFrame
+Cline2.BackgroundColor3 = Color3.new(1, 1, 1)
+Cline2.BackgroundTransparency = 1
+Cline2.BorderColor3 = Color3.new(0, 0, 0)
+Cline2.BorderSizePixel = 0
+Cline2.Position = UDim2.new(0.184931502, 0, 0.395833343, 0)
+Cline2.Size = UDim2.new(0, 231, 0, 29)
+Cline2.Font = Enum.Font.SourceSans
+Cline2.Text = "UI Creator : ywxo"
+Cline2.TextColor3 = Color3.new(1, 1, 1)
+Cline2.TextSize = 14
+Cline2.TextXAlignment = Enum.TextXAlignment.Left
+
+local OpenCredits = Instance.new("TextLabel")
+OpenCredits.Name = "OpenCredits"
+OpenCredits.Parent = BottomFrame
+OpenCredits.BackgroundColor3 = Color3.new(1, 1, 1)
+OpenCredits.BackgroundTransparency = 1
+OpenCredits.BorderColor3 = Color3.new(0, 0, 0)
+OpenCredits.BorderSizePixel = 0
+OpenCredits.Position = UDim2.new(0.14041096, 0, 0.176470593, 0)
+OpenCredits.Size = UDim2.new(0, 142, 0, 21)
+OpenCredits.Font = Enum.Font.SourceSans
+OpenCredits.Text = "Open Credits"
+OpenCredits.TextColor3 = Color3.new(1, 1, 1)
+OpenCredits.TextSize = 14
+OpenCredits.TextXAlignment = Enum.TextXAlignment.Left
