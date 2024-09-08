@@ -5,28 +5,30 @@ local RunService = game:GetService("RunService")
 local LocalPlayer = game:GetService("Players").LocalPlayer
 local Mouse = LocalPlayer:GetMouse()
 local CloseBind = Enum.KeyCode.RightControl
+
+-- GUI Setup
 local ui = Instance.new("ScreenGui")
 ui.Name = "YS_Search"
 ui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 ui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-coroutine.wrap(
-    function()
-        while wait() do
-            lib.RainbowColorValue = lib.RainbowColorValue + 1 / 255
-            lib.HueSelectionPosition = lib.HueSelectionPosition + 1
 
-            if lib.RainbowColorValue >= 1 then
-                lib.RainbowColorValue = 0
-            end
+-- Rainbow Color Logic
+coroutine.wrap(function()
+    while wait() do
+        lib.RainbowColorValue = lib.RainbowColorValue + 1 / 255
+        lib.HueSelectionPosition = lib.HueSelectionPosition + 1
 
-            if lib.HueSelectionPosition == 80 then
-                lib.HueSelectionPosition = 0
-            end
+        if lib.RainbowColorValue >= 1 then
+            lib.RainbowColorValue = 0
+        end
+
+        if lib.HueSelectionPosition == 80 then
+            lib.HueSelectionPosition = 0
         end
     end
-)()
+end)()
 
-
+-- Main Frame
 local Main = Instance.new("Frame")
 Main.Name = "Main"
 Main.Parent = ui
@@ -36,6 +38,8 @@ Main.BorderColor3 = Color3.new(0.815686, 0.831373, 0.905882)
 Main.BorderSizePixel = 0
 Main.Position = UDim2.new(0.5, 0, 0.5, 0)
 Main.Size = UDim2.new(0, 292, 0, 319)
+
+-- Drag Functionality
 local function MakeDraggable(DragFrame, object)
     local Dragging = false
     local DragStart = nil
@@ -72,7 +76,10 @@ local function MakeDraggable(DragFrame, object)
         end
     end)
 end
+
 MakeDraggable(Main, Main)
+
+-- Drag Frame
 local DragFrame = Instance.new("Frame")
 DragFrame.Name = "DragFrame"
 DragFrame.Parent = Main
@@ -84,6 +91,7 @@ DragFrame.Size = UDim2.new(0, 292, 0, 34)
 local UICorner = Instance.new("UICorner")
 UICorner.Parent = DragFrame
 
+-- Games Holder
 local GamesHolder = Instance.new("ScrollingFrame")
 GamesHolder.Name = "GamesHolder"
 GamesHolder.Parent = Main
@@ -97,8 +105,7 @@ GamesHolder.Size = UDim2.new(0, 280, 0, 246)
 local UICorner_2 = Instance.new("UICorner")
 UICorner_2.Parent = GamesHolder
 
-local gamesholder = {}
-
+-- Button Creation Function
 local function createButton(name)
     local button = Instance.new("TextButton")
     button.Name = name
@@ -117,20 +124,22 @@ local function createButton(name)
     return button
 end
 
+-- Function to Add Game
 local function addGame(name, randomImageId, gameTitle, gameId, latestUpdate, loadFunction)
     local button = createButton(name)
-    table.insert(gamesholder, button)
-    
+
     button.MouseButton1Click:Connect(function()
+        -- Create Game Tab
         local Tab = Instance.new("Frame")
         Tab.Name = name
         Tab.Parent = Main
         Tab.BackgroundColor3 = Color3.new(0.117647, 0.117647, 0.117647)
         Tab.Size = UDim2.new(0, 187, 0, 319)
-        
+
         local UICorner = Instance.new("UICorner")
         UICorner.Parent = Tab
-        
+
+        -- Random Image Background
         local RandomImageBackground = Instance.new("Frame")
         RandomImageBackground.Parent = Tab
         RandomImageBackground.BackgroundColor3 = Color3.new(0.0980392, 0.0980392, 0.0980392)
@@ -145,7 +154,8 @@ local function addGame(name, randomImageId, gameTitle, gameId, latestUpdate, loa
         RandomImage.Image = randomImageId
         local UICornerImage = Instance.new("UICorner")
         UICornerImage.Parent = RandomImage
-        
+
+        -- Game Title Label
         local GameTitleLabel = Instance.new("TextLabel")
         GameTitleLabel.Parent = Tab
         GameTitleLabel.BackgroundTransparency = 1
@@ -156,6 +166,7 @@ local function addGame(name, randomImageId, gameTitle, gameId, latestUpdate, loa
         GameTitleLabel.TextColor3 = Color3.new(1, 1, 1)
         GameTitleLabel.TextSize = 16
 
+        -- Game ID Label
         local GameIdLabel = Instance.new("TextLabel")
         GameIdLabel.Parent = Tab
         GameIdLabel.BackgroundTransparency = 1
@@ -166,6 +177,7 @@ local function addGame(name, randomImageId, gameTitle, gameId, latestUpdate, loa
         GameIdLabel.TextColor3 = Color3.new(1, 1, 1)
         GameIdLabel.TextSize = 14
 
+        -- Latest Update Label
         local LatestUpdateLabel = Instance.new("TextLabel")
         LatestUpdateLabel.Parent = Tab
         LatestUpdateLabel.BackgroundTransparency = 1
@@ -176,6 +188,7 @@ local function addGame(name, randomImageId, gameTitle, gameId, latestUpdate, loa
         LatestUpdateLabel.TextColor3 = Color3.new(1, 1, 1)
         LatestUpdateLabel.TextSize = 16
 
+        -- Load Button
         local LoadButton = Instance.new("TextButton")
         LoadButton.Name = "LoadButton"
         LoadButton.Parent = Tab
