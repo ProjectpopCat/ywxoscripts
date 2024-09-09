@@ -504,16 +504,31 @@ OpenCreatorInfo.MouseButton1Click:Connect(function()
     CreatorFrame.Visible = not CreatorFrame.Visible
 end)
 
-function UpdateCimage(id)
-    Cimage.Image = "http://www.roblox.com/asset/?id=" .. id
+local function UpdateCimage(imageId)
+    local ImageLabel = Main:FindFirstChild("Cimage") -- Annahme, dass Cimage ein Bildlabel ist
+    if ImageLabel then
+        ImageLabel.Image = "rbxthumb://type=Asset&id=" .. imageId .. "&w=150&h=150"
+    else
+        warn("ImageLabel 'Cimage' not found!")
+    end
 end
 
-function UpdateCline1(text)
-    Cline1.Text = text
+local function UpdateCline1(text)
+    local Cline1 = Main:FindFirstChild("Cline1")
+    if Cline1 then
+        Cline1.Text = text
+    else
+        warn("Cline1 TextLabel not found!")
+    end
 end
 
-function UpdateCline2(text)
-    Cline2.Text = text
+local function UpdateCline2(text)
+    local Cline2 = Main:FindFirstChild("Cline2")
+    if Cline2 then
+        Cline2.Text = text
+    else
+        warn("Cline2 TextLabel not found!")
+    end
 end
 
 
